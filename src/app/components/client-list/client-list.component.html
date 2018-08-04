@@ -1,0 +1,112 @@
+<form #f="ngForm" novalidate (ngSubmit)="onSubmit(f)">
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="name">Name</label>
+      <input type="text" class="form-control" id="name" placeholder="Name"
+             [ngClass]=" {'is-invalid': clientName.errors && clientName.touched, 'is-valid': !clientName.errors && clientName.touched}"
+             [(ngModel)]="client.name"
+             #clientName="ngModel"
+             name="name"
+             required
+             minlength="2"
+      >
+      <div class="invalid-feedback" [hidden]="!clientName.errors?.required">Name must be not empty.</div>
+      <div class="invalid-feedback" [hidden]="!clientName.errors?.minlength">Name length must be > 2.</div>
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+
+    <div class="form-group col-md-6">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" placeholder="Email"
+             [ngClass]=" {'is-invalid': clientEmail.errors && clientEmail.touched, 'is-valid': !clientEmail.errors && clientEmail.touched}"
+             [(ngModel)]="client.email"
+             #clientEmail="ngModel"
+             name="email"
+             email
+             required
+      >
+      <div class="invalid-feedback" [hidden]="!clientEmail.errors?.required">Email must be not empty.</div>
+      <div class="invalid-feedback" [hidden]="!clientEmail.errors?.email">Email has invalid format.</div>
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-6">
+      <label for="age">Age</label>
+      <input type="number" class="form-control" id="age" placeholder="Age"
+             [ngClass]=" {'is-invalid': clientAge.errors && clientAge.touched, 'is-valid': !clientAge.errors && clientAge.touched}"
+             [(ngModel)]="client.age"
+             #clientAge="ngModel"
+             name="age"
+             pattern="^[1-9][0-9]?$"
+             required>
+      <div class="invalid-feedback" [hidden]="!clientAge.errors?.required">Age must be not empty.</div>
+      <div class="invalid-feedback" [hidden]="!clientAge.errors?.pattern">Client must be 1-99 years old.</div>
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+    <div class="form-group col-md-6">
+      <label for="phone">Phone</label>
+      <input type="text" class="form-control" id="phone" placeholder="Phone"
+             [ngClass]=" {'is-invalid': clientPhone.errors && clientPhone.touched, 'is-valid': !clientPhone.errors && clientPhone.touched}"
+             [(ngModel)]="client.phone"
+             #clientPhone="ngModel"
+             name="phone"
+             pattern="^[2-9]{2}[0-9]{8}$"
+             required>
+      <div class="invalid-feedback" [hidden]="!clientPhone.errors?.required">Phone must be not empty.</div>
+      <div class="invalid-feedback" [hidden]="!clientPhone.errors?.pattern">Phone has invalid format. Must be 10 digit symbols, not starts with 0 or 1</div>
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+  </div>
+
+  <div class="form-row">
+    <div class="form-group col-md-10">
+      <label for="comment">Comment</label>
+      <textarea class="form-control" id="comment" placeholder="Comment"
+                [ngClass]=" {'is-invalid': clientComment.errors && clientComment.touched, 'is-valid': !clientComment.errors && clientComment.touched}"
+                [(ngModel)]="client.comment"
+                #clientComment="ngModel"
+                name="comment"
+                required>
+      </textarea>
+      <div class="invalid-feedback" [hidden]="!clientComment.errors?.required">Comment must be not empty.</div>
+      <div class="valid-feedback">Looks good!</div>
+    </div>
+    <div class="form-group col-md-2 text-center align-self-end">
+      <button type="submit" class="btn btn-primary" [disabled]="f.invalid">Create</button>
+    </div>
+  </div>
+
+  <!--<p>{{ client | json }} </p>-->
+
+</form>
+
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Name</th>
+    <th scope="col">Email</th>
+    <th scope="col">Age</th>
+    <th scope="col">Phone</th>
+    <th scope="col">Comment</th>
+    <th scope="col">Action</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let c of clients; let idx = index">
+    <th scope="row">{{ c.id }}</th>
+    <td>{{ c.name }}</td>
+    <td>{{ c.email }}</td>
+    <td>{{ c.age }}</td>
+    <td>{{ c.phone }}</td>
+    <td>{{ c.comment }}</td>
+    <td><a (click)="removeItem(idx)" class="btn btn-danger" href="#" role="button">Remove</a></td>
+  </tr>
+
+  </tbody>
+</table>
+
+<div *ngIf="clients.length === 0" class="alert alert-info text-center">No Clients yet!</div>
